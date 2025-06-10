@@ -1,0 +1,194 @@
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-container input[type="password"],
+.password-container input[type="text"] {
+    flex: 1;
+    padding-right: 45px;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+}
+
+
+/* Reset e fonte */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+
+/* Corpo da página */
+
+body {
+    background-color: #f4f4f4;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* Estrutura principal */
+
+.container {
+    display: flex;
+    background-color: #fff;
+    width: 750px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Área do formulário */
+
+.form-box {
+    width: 50%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+/* Logo da empresa */
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.logo img {
+    height: 30px;
+    margin-right: 10px;
+}
+
+.logo span {
+    font-weight: bold;
+    font-size: 18px;
+    color: #c2531d;
+}
+
+
+/* Título e descrição */
+
+.form-content h1 {
+    color: #c2531d;
+    margin-bottom: 10px;
+}
+
+.form-content p {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+
+/* Campos e botão */
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Inputs mais arredondados */
+
+form input {
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 30px;
+    /* ← aqui está mais arredondado */
+    border: 1px solid #ccc;
+    font-size: 14px;
+    width: 100%;
+    height: 45px;
+}
+
+.register {
+    position: relative;
+    left: 30px;
+    margin: 10px;
+}
+
+
+/* Botão também arredondado */
+
+form button {
+    padding: 12px;
+    background-color: #c2531d;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 100%;
+    height: 45px;
+}
+
+
+/* Container do campo de senha com ícone de olho */
+
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 299;
+    height: 60;
+    gap: 5px;
+    top: 10PX;
+}
+
+.password-container input {
+    width: 100%;
+    padding-right: 40px;
+    /* espaço para o ícone */
+}
+
+.eye-icon {
+    position: absolute;
+    right: 15px;
+    top: 35%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    user-select: none;
+}
+
+.eye-icon img {
+    pointer-events: none;
+}
+
+
+/* Área da imagem */
+
+.image-box {
+    width: 50%;
+    background-color: #c2531d;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    /* empurra a imagem para a direita */
+    padding-right: 20px;
+    /* um espaço pequeno da borda, se quiser */
+    position: relative;
+}
+
+.image-box img {
+    width: auto;
+    /* para manter a proporção */
+    max-height: 75%;
+    position: relative;
+    top: 150px;
+    left: 75px;
+}
