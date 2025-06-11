@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import '../assets/css/dashboard.css';
 import { useNavigate, Link } from 'react-router-dom';
 import logo from '../assets/img/logo.png';
+import userphoto from '../assets/img/userphoto.png';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt, faX } from '@fortawesome/free-solid-svg-icons';
+
+
 
 export default function Dashboard() {
   const [activeSection, setActiveSection] = useState("dashboard");
@@ -204,18 +209,74 @@ const handlePhotoChange = (e) => {
   const userName = "Romário";
 
   const [modalidade, setModalidade] = useState("equipes");
- 
+const estiloCabecalho = {
+  padding: "12px",
+  color: "#f4a261",
+  fontWeight: "600",
+  fontSize: "13px",
+  textAlign: "left",
+};
+
+const estiloCelula = {
+  padding: "12px",
+  fontSize: "14px",
+  color: "#2d3436",
+};
+
+const estiloStatus = {
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
+};
+
+const bolinhaVerde = {
+  width: "10px",
+  height: "10px",
+  borderRadius: "50%",
+  backgroundColor: "limegreen",
+};
+
+const botaoMenu = {
+  background: "none",
+  border: "none",
+  fontSize: "18px",
+  cursor: "pointer",
+};
+
+const menuFlutuante = {
+  position: "absolute",
+  right: "8px",
+  top: "36px",
+  background: "#fff",
+  border: "1px solid #ddd",
+  boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+  borderRadius: "4px",
+  zIndex: 10,
+};
+
+const itemMenu = {
+  padding: "8px 12px",
+  cursor: "pointer",
+  fontSize: "14px",
+  whiteSpace: "nowrap",
+  borderBottom: "1px solid #eee",
+};
+ const [menuAbertoIndex, setMenuAbertoIndex] = useState(null);
+
+  const alternarMenu = (index) => {
+    setMenuAbertoIndex(prev => (prev === index ? null : index));
+  };
   return (
-    <div className="dashboard" style={{ display: "flex", minHeight: "100vh" }}>
+    <div className="dashboard">
       {/* Sidebar */}
-      <aside className="sidebar" style={{ width: "250px", padding: "1rem", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+      <aside className="sidebar">
         <div>
           <div className="logo" style={{ marginBottom: "2rem" }}>
                       <img src={logo} alt="Logo" style={{ maxWidth: "100%" }} />
           </div>
           <nav>
           <h3 className="menu-title">Menu</h3>
-          <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+          <ul>
             <li className={activeSection === "dashboard" ? "active" : ""}>
               <a href="#" onClick={e => { e.preventDefault(); setActiveSection("dashboard"); }} style={{ textDecoration: "none" }}>
                 <i className="fas fa-th-large"></i> Dashboard
@@ -240,12 +301,12 @@ const handlePhotoChange = (e) => {
          </nav>
          
         </div>
-        <div className="user-footer" style={{ textAlign: "center" }}>
+        <div className="user-footer">
           <div>
             <span className="user">{userName}</span><br />
             <img
               id="userPhoto"
-              src={photoUrl}
+              src={userphoto}
               alt="Foto do usuário"
               width="48"
               style={{ borderRadius: "50%", marginTop: "0.5rem" }}
@@ -257,7 +318,7 @@ const handlePhotoChange = (e) => {
       </aside>
 
       {/* Conteúdo principal */}
-      <main className="main-content" style={{ flexGrow: 1, padding: "1rem 2rem", overflowY: "auto", backgroundColor: "#ecf0f1", minHeight: "100vh" }}>
+      <main className="main-content">
         <header>
           <h1>Bem-vindo(a) <span>{userName}</span> 👋</h1>
         </header>
@@ -323,16 +384,47 @@ const handlePhotoChange = (e) => {
         {activeSection === "eventos" && (
           <section className="content-section active">
             <h2>📅 Eventos</h2>
-            <input
-              type="text"
-              placeholder="Buscar evento..."
-              value={searchTerm}
-              onChange={e => { setSearchTerm(e.target.value); setPaginaAtual(1); }}
-              style={{ marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
-            />
-            <button onClick={abrirFormularioNovo} style={{ marginBottom: "1rem" }}>
-              + Novo Evento
-            </button>
+              <input
+               type="text"
+               placeholder="Digite aqui"
+               style={{
+                 width: "100%",
+                 padding: "10px 15px",
+                 border: "none",
+                 borderRadius: "999px", // formato arredondado
+                 backgroundColor: "#f5f5f5",
+                 color: "#333",
+                 fontSize: "14px",
+                 marginBottom: "1rem",
+                 boxShadow: "inset 0px 2px 4px rgba(0, 0, 0, 0.05)"
+               }}
+               value={searchTerm}
+               onChange={e => {
+                 setSearchTerm(e.target.value);
+                 setPaginaAtual(1);
+               }}
+             />
+
+             <button
+               onClick={abrirFormularioNovo}
+               style={{
+                 backgroundColor: "#d75a33", // tom alaranjado
+                 color: "#fff",
+                 padding: "10px 20px",
+                 border: "none",
+                 borderRadius: "999px", // formato pílula
+                 fontWeight: "bold",
+                 cursor: "pointer",
+                 marginBottom: "1rem",
+                 fontSize: "14px",
+                 boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)"
+               }}
+              >
+                + Novo Evento
+              </button>
+ 
+
+
             {showEventoForm && (
               <form onSubmit={salvarEvento} style={{ marginBottom: "1rem", background: "#fff", padding: "1rem", borderRadius: "5px" }}>
                 <div>
@@ -363,49 +455,176 @@ const handlePhotoChange = (e) => {
                     required
                   />
                 </div>
-                <button type="submit" style={{ marginTop: "1rem" }}>
-                  {indexEditando !== null ? "Salvar Alterações" : "Adicionar Evento"}
-                </button>
-                <button type="button" onClick={cancelarFormulario} style={{ marginLeft: "1rem" }}>
-                  Cancelar
-                </button>
+              <button
+              type="submit"
+              style={{
+                backgroundColor: "#d75a33",
+                color: "#fff",
+                padding: "10px 20px",
+                border: "none",
+                borderRadius: "999px",
+                fontWeight: "bold",
+                cursor: "pointer",
+                marginTop: "1rem",
+                fontSize: "14px",
+                marginRight: "0.5rem"
+              }}
+            >
+              {indexEditando !== null ? "Salvar Alterações" : "Adicionar Evento"}
+            </button>
+            
+            <button
+              type="button"
+              onClick={cancelarFormulario}
+              style={{
+                backgroundColor: "#ccc",
+                color: "#333",
+                padding: "10px 20px",
+                border: "none",
+                borderRadius: "999px",
+                cursor: "pointer",
+                fontSize: "14px",
+                marginTop: "1rem"
+              }}
+            >
+              Cancelar
+            </button>
+
               </form>
             )}
 
             {/* Lista de eventos paginada */}
             {eventosPagina.length === 0 && <p>Nenhum evento encontrado.</p>}
             {eventosPagina.length > 0 && (
-              <table border="1" cellPadding="8" style={{ width: "100%", background: "white", borderCollapse: "collapse" }}>
-                <thead style={{ background: "#3498db", color: "white" }}>
-                  <tr>
-                    <th>Nome do Evento</th>
-                    <th>Total de Equipes</th>
-                    <th>Status</th>
-                    <th>Data</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {eventosPagina.map((ev, i) => (
-                    <tr key={inicio + i}>
-                      <td>{ev.nome}</td>
-                      <td>{ev.equipes}</td>
-                      <td>{ev.status}</td>
-                      <td>{ev.data}</td>
-                      <td>
-                        <button onClick={() => abrirFormularioEdicao(inicio + i)}>Editar</button>
-                        <button onClick={() => removerEvento(inicio + i)} style={{ marginLeft: "0.5rem", color: "red" }}>Remover</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-            <div style={{ marginTop: "1rem", display: "flex", justifyContent: "space-between" }}>
-              <button onClick={paginaAnterior} disabled={paginaAtual === 1}>Anterior</button>
-              <span>Página {paginaAtual} de {totalPaginas || 1}</span>
-              <button onClick={paginaProxima} disabled={paginaAtual === totalPaginas || totalPaginas === 0}>Próximo</button>
+               <table style={{
+         width: "100%",
+         borderCollapse: "collapse",
+         backgroundColor: "#fff",
+         fontFamily: "Arial, sans-serif"
+       }}>
+         <thead>
+           <tr style={{ borderBottom: "2px solid #f2f2f2" }}>
+             <th style={estiloCabecalho}>Nome do Evento</th>
+             <th style={estiloCabecalho}>Total de Equipes</th>
+             <th style={estiloCabecalho}>Status</th>
+             <th style={estiloCabecalho}>Data</th>
+             <th style={estiloCabecalho}>Ações</th>
+           </tr>
+         </thead>
+         <tbody>
+           {eventosPagina.map((ev, i) => (
+             <tr key={inicio + i} style={{ borderBottom: "1px solid #f0f0f0", position: "relative" }}>
+               <td style={estiloCelula}>{ev.nome}</td>
+               <td style={estiloCelula}>{ev.equipes}</td>
+               <td style={estiloCelula}>
+                 <div style={estiloStatus}>
+                   <span style={bolinhaVerde}></span>
+                   <span>{ev.status}</span>
+                 </div>
+               </td>
+               <td style={estiloCelula}>{ev.data}</td>
+               <td style={{ position: "relative" }}>
+              <span
+                onClick={() => alternarMenu(i)}
+                style={{ cursor: "pointer", fontSize: "1.5rem" }}
+              >
+                &#8942;
+              </span>            
+
+              {menuAbertoIndex === i && (
+                <div
+                  style={{
+                    position: "absolute",
+                    right: "0",
+                    top: "100%",
+                    background: "#fff",
+                    border: "1px solid #ccc",
+                    boxShadow: "0 2px 5px rgba(0,0,0,0.15)",
+                    zIndex: 1,
+                  }}
+                >
+                  <div
+                    onClick={() => abrirFormularioEdicao(i)}
+                    style={{ padding: "0.5rem", cursor: "pointer" }}
+                  >
+                   <FontAwesomeIcon icon={faPencilAlt} /> Editar
+                  </div>
+                  <div
+                    onClick={() => removerEvento(i)}
+                    style={{ padding: "0.2rem", cursor: "pointer", color: "red" }}
+                  >
+                    <FontAwesomeIcon icon={faX} />Remover
+                  </div>
+                </div>
+              )}
+            </td>
+
+             </tr>
+           ))}
+         </tbody>
+       </table>
+
+      )}
+
+          <div style={{ marginTop: "1rem", display: "flex", justifyContent: "center", gap: "0.5rem", alignItems: "center" }}>
+              <button
+                onClick={paginaAnterior}
+                disabled={paginaAtual === 1}
+                style={{
+                  backgroundColor: "#f5f5f5",
+                  color: "#000",
+                  padding: "8px 16px",
+                  border: "none",
+                  borderRadius: "999px",
+                  fontWeight: "500",
+                  cursor: paginaAtual === 1 ? "not-allowed" : "pointer",
+                  opacity: paginaAtual === 1 ? 0.6 : 1
+                }}
+              >
+                Anterior
+              </button>
+            
+              {[...Array(totalPaginas).keys()].map((n) => {
+                const numeroPagina = n + 1;
+                const ativo = numeroPagina === paginaAtual;
+            
+                return (
+                  <button
+                    key={numeroPagina}
+                    onClick={() => setPaginaAtual(numeroPagina)}
+                    style={{
+                      backgroundColor: ativo ? "#d75a33" : "#f5f5f5",
+                      color: ativo ? "#fff" : "#000",
+                      padding: "8px 14px",
+                      border: "none",
+                      borderRadius: "999px",
+                      fontWeight: "bold",
+                      cursor: "pointer"
+                    }}
+                  >
+                    {numeroPagina}
+                  </button>
+                );
+              })}
+            
+              <button
+                onClick={paginaProxima}
+                disabled={paginaAtual === totalPaginas || totalPaginas === 0}
+                style={{
+                  backgroundColor: "#d75a33",
+                  color: "#fff",
+                  padding: "8px 16px",
+                  border: "none",
+                  borderRadius: "999px",
+                  fontWeight: "500",
+                  cursor: paginaAtual === totalPaginas || totalPaginas === 0 ? "not-allowed" : "pointer",
+                  opacity: paginaAtual === totalPaginas || totalPaginas === 0 ? 0.6 : 1
+                }}
+              >
+                Próxima
+              </button>
             </div>
+
           </section>
         )}
 
@@ -420,9 +639,23 @@ const handlePhotoChange = (e) => {
               onChange={e => setFormEquipe(e.target.value)}
               style={{ marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
             />
-            <button onClick={salvarEquipe} style={{ marginBottom: "1rem" }}>
-              + Nova Equipe
-            </button>
+            <button
+               onClick={salvarEquipe}
+               style={{
+                 backgroundColor: "#d75a33", // tom alaranjado
+                 color: "#fff",
+                 padding: "10px 20px",
+                 border: "none",
+                 borderRadius: "999px", // formato pílula
+                 fontWeight: "bold",
+                 cursor: "pointer",
+                 marginBottom: "1rem",
+                 fontSize: "14px",
+                 boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)"
+               }}
+             >
+               + Nova Equipe
+             </button>
             <ul>
               {equipes.map((equipe, i) => (
                 <li key={i}>
